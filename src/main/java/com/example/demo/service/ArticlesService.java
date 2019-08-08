@@ -19,5 +19,9 @@ public class ArticlesService {
 	public List<Articles> findAllArticles(){
 		return repository.findAll();
 	}
+	
+	public void insertArticle(Articles articles) {
+		repository.insert(articles);
+	}
 
 }

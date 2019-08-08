@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Articles;
@@ -43,19 +45,28 @@ public class ArticlesRepository {
 			commentList.add(comment);
 		}
 		
-		System.out.println(articleList);
+	
 		return articleList;
 		
 	};
 	
 	
 	public List<Articles> findAll(){
-		String sql = "SELECT a.id,a.name,a.content,c.id comment_id,c.name comment_name,c.content comment_content,c.article_id comment_article_id FROM articles a INNER JOIN comments c ON a.id = c.article_id;";
+		String sql = "SELECT a.id,a.name,a.content,c.id comment_id,c.name comment_name,c.content comment_content,c.article_id comment_article_id "
+					+ "FROM articles a LEFT OUTER JOIN comments c ON a.id = c.article_id ORDER BY id DESC;";
 		
 		List<Articles> articleList =  template.query(sql, RESULT);
 		
 		return articleList;
 		
+	}
+	
+	public void insert(Articles article) {
+		String sql = "INSERT INTO articles(name, content) VALUES(:name,:content)";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", article.getName()).addValue("content", article.getContent());
+		
+		template.update(sql, param);
 	}
 	
 
