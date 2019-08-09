@@ -8,6 +8,7 @@
 
 	<h1>掲示板アプリケーション</h1>
 	
+		<!-- 記事投稿フォーム -->
 		<p>記事件数: </p>
 		<p>データー取得時間:</p>
 		<form th:action="@{/postArticle}" th:object="${articleForm}" method="post">
@@ -18,22 +19,35 @@
 		</form>
 		<br>
 		
+		
+		<!-- 記事投稿内容 -->
 		<div th:each="bbs : ${bbsList}">
 			<hr>
 			投稿ID:<span th:text="${bbs.id}"></span><br>
 			投稿者名:<span th:text="${bbs.name}"></span><br>
 			投稿内容:<br><br><span th:text="${bbs.content}"></span>
-			<form action="delete" method="post"><br>
+			<form th:action="@{/delete}" method="post"><br>
 				<button>記事削除</button>
 			</form><br>
 			
-			<span th:each="comment : ${bbs.commentList}">
-				コメントID:<span th:text="${comment.id}"></span><br>
-				コメント者名:<span th:text="${comment.name}"></span><br>
-				コメント内容:<span th:text="${comment.content}"></span><br>
-				<br>
-			</span>
 			
+				<!-- コメント内容 -->
+				<span th:each="comment : ${bbs.commentList}">
+					<span th:if="${comment.id == 0}" style="color:red">
+						コメントがまだありません！
+					</span>
+					<br>
+					<span th:unless="${comment.id == 0}">
+						コメントID:<span th:text="${comment.id}"></span><br>
+						コメント者名:<span th:text="${comment.name}"></span><br>
+						コメント内容:<span th:text="${comment.content}"></span><br>
+					
+					</span>
+					<br>
+					</span>
+				
+			
+			<!-- コメント投稿欄 -->
 			<form th:action="@{'/postComment?articleId='} + ${bbs.id}" method="post">
 				名前:<input type="text" name="name"><br>
 				コメント:<br><textarea rows="3" cols="30" name="content" style="overflow: scroll;"></textarea><br>

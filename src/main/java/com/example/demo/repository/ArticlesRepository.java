@@ -85,5 +85,10 @@ public class ArticlesRepository {
 		template.update(sql, param);
 	}
 	
+	
+	public void deleteById() {
+		String sql = "DELETE FROM ";
+	}
+	
 
 }

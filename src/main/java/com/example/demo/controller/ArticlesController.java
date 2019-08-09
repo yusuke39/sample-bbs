@@ -68,7 +68,7 @@ public class ArticlesController {
 		articles.setName(form.getName());
 		articles.setContent(form.getContent());
 		articleService.insertArticle(articles);
-		return index(model);
+		return "redirect:/";
 	}
 	
 	
@@ -85,9 +85,19 @@ public class ArticlesController {
 		comment.setName(form.getName());
 		comment.setContent(form.getContent());
 		comment.setArticleId(Integer.parseInt(form.getArticleId()));
-		System.out.println(comment);
 		commentService.insertComment(comment);
-		return index(model);
+		return "redirect:/";
 	}
+	
+	
+	/**
+	 * 記事とコメント一括削除する.
+	 * 
+	 * @return indexメソッドに戻る
+	 */
+//	@RequestMapping("/delete")
+//	public String deleteArticles() {
+//		
+//	}
 
 }
