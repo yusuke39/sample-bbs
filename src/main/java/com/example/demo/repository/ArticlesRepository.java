@@ -43,12 +43,18 @@ public class ArticlesRepository {
 				articleList.add(articles);
 				preId = rs.getInt("id");
 			}
+			
 			Comment comment = new Comment();
-			comment.setId(rs.getInt("comment_id"));
-			comment.setName(rs.getString("comment_name"));
-			comment.setContent(rs.getString("comment_content"));		
-			comment.setArticleId(rs.getInt("comment_article_id"));
-			commentList.add(comment);
+			if(rs.getString("content") == null) {
+				return null;
+			} else {
+				comment.setId(rs.getInt("comment_id"));
+				comment.setName(rs.getString("comment_name"));
+				comment.setContent(rs.getString("comment_content"));		
+				comment.setArticleId(rs.getInt("comment_article_id"));
+				commentList.add(comment);
+			}
+			
 		}
 		
 	
@@ -86,8 +92,17 @@ public class ArticlesRepository {
 	}
 	
 	
-	public void deleteById() {
-		String sql = "DELETE FROM ";
+	/**
+	 * 記事とコメントを一括で削除する.
+	 * 
+	 * @param id id 記事IDとcommentsテーブルのarticlesテーブルの外部キーID(article_id)
+	 */
+	public void deleteById(Integer id) {
+		String sql = "WITH deleted AS(DELETE FROM articles WHERE id = :id) DELETE FROM comments WHERE comments.article_id = :id";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		
+		template.update(sql, param);
 	}
 	
 

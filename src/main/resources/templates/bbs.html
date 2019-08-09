@@ -12,7 +12,9 @@
 		<p>記事件数: </p>
 		<p>データー取得時間:</p>
 		<form th:action="@{/postArticle}" th:object="${articleForm}" method="post">
+			<div th:errors="*{name}" style="color:red"></div>
 			名前:<input type="text" name="name" th:field="*{name}"><br>
+			<div th:errors="*{content}" style="color:red"></div>
 			投稿内容:<br>
 			<textarea rows="10" cols="30" name="content" th:field="*{content}" style="overflow: scroll;"></textarea><br>
 			<button>記事投稿</button>
@@ -21,18 +23,18 @@
 		
 		
 		<!-- 記事投稿内容 -->
-		<div th:each="bbs : ${bbsList}">
+		<div th:each="article : ${articleList}">
 			<hr>
-			投稿ID:<span th:text="${bbs.id}"></span><br>
-			投稿者名:<span th:text="${bbs.name}"></span><br>
-			投稿内容:<br><br><span th:text="${bbs.content}"></span>
-			<form th:action="@{/delete}" method="post"><br>
+			投稿ID:<span th:text="${article.id}"></span><br>
+			投稿者名:<span th:text="${article.name}"></span><br>
+			投稿内容:<br><br><span th:text="${article.content}"></span>
+			<form th:action="@{'/delete?id='} + ${article.id}" method="post"><br>
 				<button>記事削除</button>
 			</form><br>
 			
 			
 				<!-- コメント内容 -->
-				<span th:each="comment : ${bbs.commentList}">
+				<span th:each="comment : ${article.commentList}">
 					<span th:if="${comment.id == 0}" style="color:red">
 						コメントがまだありません！
 					</span>
@@ -48,8 +50,10 @@
 				
 			
 			<!-- コメント投稿欄 -->
-			<form th:action="@{'/postComment?articleId='} + ${bbs.id}" method="post">
+			<form th:action="@{'/postComment?articleId='} + ${article.id}" th:object="${commentForm}" method="post">
+				<div th:errors="*{name}" th:field="*{name}" style="color:red"></div>
 				名前:<input type="text" name="name"><br>
+				<div th:errors="*{content}" th:field="*{content}" style="color:red"></div>
 				コメント:<br><textarea rows="3" cols="30" name="content" style="overflow: scroll;"></textarea><br>
 				<button>コメント投稿</button>
 			</form>

@@ -1,5 +1,8 @@
 package com.example.demo.form;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 /**
  * 記事投稿のリクエストパラメーターを受け取る.
  * 
@@ -9,8 +12,11 @@ package com.example.demo.form;
 public class ArticleForm {
 
 	/**名前*/
+	@NotBlank(message="名前は必須です")
+	@Size(min=1, max=50, message="名前は５０文字以内で入力してください")
 	private String name;
 	/**投稿内容*/
+	@NotBlank(message="コメントは必須です")
 	private String content;
 
 

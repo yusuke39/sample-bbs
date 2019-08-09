@@ -40,4 +40,13 @@ public class ArticlesService {
 		repository.insert(articles);
 	}
 
+	
+	/**
+	 * 記事とコメントを削除する.
+	 * 
+	 * @param id 記事IDとcommentsテーブルのarticlesテーブルの外部キーID(article_id)
+	 */
+	public void deleteArticleAnd(Integer id) {
+		repository.deleteById(id);
+	}
 }

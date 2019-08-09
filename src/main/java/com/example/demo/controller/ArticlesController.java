@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.Articles;
 import com.example.demo.domain.Comment;
@@ -50,8 +53,8 @@ public class ArticlesController {
 	 */
 	@RequestMapping("")
 	public String index(Model model) {
-	  List<Articles> bbsList =  articleService.findAllArticles();
-	  model.addAttribute("bbsList", bbsList);
+	  List<Articles> articleList =  articleService.findAllArticles();
+	  model.addAttribute("articleList", articleList);
 	  return "bbs";
 	}
 	
@@ -63,7 +66,13 @@ public class ArticlesController {
 	 * @return　indexメソッドを呼び出し、掲示板画面へ最新の投稿を表示する
 	 */
 	@RequestMapping("/postArticle")
-	public String postArticle(ArticleForm form, Model model) {
+	public String postArticle(@Validated ArticleForm form, 
+			BindingResult result,
+			RedirectAttributes redirectAttributes,
+			Model model) {
+		if(result.hasErrors()) {
+			return index(model);
+		}
 		Articles articles = new Articles();
 		articles.setName(form.getName());
 		articles.setContent(form.getContent());
@@ -80,7 +89,13 @@ public class ArticlesController {
 	 * @return　indexメソッドを呼び出し、掲示板画面へ最新のコメントを表示する
 	 */
 	@RequestMapping("/postComment")
-	public String postComment(CommentForm form, Model model) {
+	public String postComment(@Validated CommentForm form, 
+							BindingResult result,
+							RedirectAttributes redirreAttributes,
+							Model model) {
+		if(result.hasErrors()) {
+			return index(model);
+		}
 		Comment comment = new Comment();
 		comment.setName(form.getName());
 		comment.setContent(form.getContent());
@@ -95,9 +110,11 @@ public class ArticlesController {
 	 * 
 	 * @return indexメソッドに戻る
 	 */
-//	@RequestMapping("/delete")
-//	public String deleteArticles() {
-//		
-//	}
+	@RequestMapping("/delete")
+	public String deleteArticles(Integer id) {
+		articleService.deleteArticleAnd(id);
+	
+		return "redirect:/";
+	}
 
 }

@@ -1,5 +1,9 @@
 package com.example.demo.form;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+
 /**
  * コメントのリクエストパラメーターを受け取るフォーム.
  * 
@@ -9,8 +13,11 @@ package com.example.demo.form;
 public class CommentForm {
 
 	/**名前*/
+	@NotBlank(message="名前は必須です")
+	@Size(min=1, max=50, message="名前は５０文字以内で入力してください")
 	private String name;
 	/**コメント内容*/
+	@NotBlank(message="コメントは必須です")
 	private String content;
 	/**ArticlesIdの外部キー*/
 	private String articleId;
