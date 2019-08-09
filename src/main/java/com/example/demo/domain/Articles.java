@@ -3,11 +3,21 @@ package com.example.demo.domain;
 import java.util.List;
 
 
+/**
+ * 記事のドメイン.
+ * 
+ * @author hiranoyuusuke
+ *
+ */
 public class Articles {
 
+	/**ID*/
 	private Integer id;
+	/**名前*/
 	private String name;
+	/**投稿内容*/
 	private String content;
+	/**コメントを格納するリスト*/
 	private List<Comment> commentList;
 
 	public Articles() {}

@@ -13,19 +13,34 @@
 		<form th:action="@{/postArticle}" th:object="${articleForm}" method="post">
 			名前:<input type="text" name="name" th:field="*{name}"><br>
 			投稿内容:<br>
-			<textarea rows="5" cols="20" name="content" th:field="*{content}" style="overflow: scroll;"></textarea><br>
+			<textarea rows="10" cols="30" name="content" th:field="*{content}" style="overflow: scroll;"></textarea><br>
 			<button>記事投稿</button>
 		</form>
 		<br>
 		
 		<div th:each="bbs : ${bbsList}">
 			<hr>
+			投稿ID:<span th:text="${bbs.id}"></span><br>
 			投稿者名:<span th:text="${bbs.name}"></span><br>
 			投稿内容:<br><br><span th:text="${bbs.content}"></span>
 			<form action="delete" method="post"><br>
 				<button>記事削除</button>
+			</form><br>
+			
+			<span th:each="comment : ${bbs.commentList}">
+				コメントID:<span th:text="${comment.id}"></span><br>
+				コメント者名:<span th:text="${comment.name}"></span><br>
+				コメント内容:<span th:text="${comment.content}"></span><br>
+				<br>
+			</span>
+			
+			<form th:action="@{'/postComment?articleId='} + ${bbs.id}" method="post">
+				名前:<input type="text" name="name"><br>
+				コメント:<br><textarea rows="3" cols="30" name="content" style="overflow: scroll;"></textarea><br>
+				<button>コメント投稿</button>
 			</form>
-		</div>
+			
+		</div><br>
 		
 
 </body>

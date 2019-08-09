@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.domain.Articles;
+import com.example.demo.domain.Comment;
 import com.example.demo.form.ArticleForm;
+import com.example.demo.form.CommentForm;
 import com.example.demo.service.ArticlesService;
+import com.example.demo.service.CommentService;
 
 /**
- * 掲示板の投稿と表示用のコントローラー
+ * 掲示板の投稿と表示用のコントローラー.
  * 
  * @author hiranoyuusuke
  *
@@ -23,26 +26,67 @@ import com.example.demo.service.ArticlesService;
 public class ArticlesController {
 	
 	@ModelAttribute
-	public ArticleForm  setUp() {
+	public ArticleForm  setUpArticleForm() {
 		return new ArticleForm();
 	}
 	
-	@Autowired
-	private ArticlesService service;
+	@ModelAttribute
+	public CommentForm setUpCommentForm() {
+		return new CommentForm();
+	}
 	
+	@Autowired
+	private ArticlesService articleService;
+	
+	@Autowired
+	private CommentService commentService;	
+	
+	
+	/**
+	 * 掲示板表示、投稿内容表示のメソッド.
+	 * 
+	 * @param model リクエストスコープ
+	 * @return　掲示板表示
+	 */
 	@RequestMapping("")
 	public String index(Model model) {
-	  List<Articles> bbsList =  service.findAllArticles();
+	  List<Articles> bbsList =  articleService.findAllArticles();
 	  model.addAttribute("bbsList", bbsList);
 	  return "bbs";
 	}
 	
+	/**
+	 * 投稿をDBへ保存する.
+	 * 
+	 * @param form 投稿のリクエストパラメーターを受け取る
+	 * @param model　リクエストスコープ
+	 * @return　indexメソッドを呼び出し、掲示板画面へ最新の投稿を表示する
+	 */
 	@RequestMapping("/postArticle")
 	public String postArticle(ArticleForm form, Model model) {
 		Articles articles = new Articles();
 		articles.setName(form.getName());
 		articles.setContent(form.getContent());
-		service.insertArticle(articles);
+		articleService.insertArticle(articles);
+		return index(model);
+	}
+	
+	
+	/**
+	 * コメントをDBへ保存する.
+	 * 
+	 * @param form コメント内容のリクエストパラメーターを受け取る
+	 * @param model　リクエストスコープ
+	 * @return　indexメソッドを呼び出し、掲示板画面へ最新のコメントを表示する
+	 */
+	@RequestMapping("/postComment")
+	public String postComment(CommentForm form, Model model) {
+		Comment comment = new Comment();
+		comment.setName(form.getName());
+		comment.setContent(form.getContent());
+		comment.setArticleId(Integer.parseInt(form.getArticleId()));
+		System.out.println(comment);
+		commentService.insertComment(comment);
 		return index(model);
 	}
 

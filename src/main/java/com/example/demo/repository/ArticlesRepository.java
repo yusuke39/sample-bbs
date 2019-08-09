@@ -14,6 +14,12 @@ import com.example.demo.domain.Articles;
 import com.example.demo.domain.Comment;
 
 
+/**
+ * 投稿記事を操作するコントローラー.
+ * 
+ * @author hiranoyuusuke
+ *
+ */
 @Repository
 public class ArticlesRepository {
 	
@@ -51,6 +57,11 @@ public class ArticlesRepository {
 	};
 	
 	
+	/**
+	 * 投稿した記事を全て検索する.
+	 * 
+	 * @return 投稿した記事を返す.
+	 */
 	public List<Articles> findAll(){
 		String sql = "SELECT a.id,a.name,a.content,c.id comment_id,c.name comment_name,c.content comment_content,c.article_id comment_article_id "
 					+ "FROM articles a LEFT OUTER JOIN comments c ON a.id = c.article_id ORDER BY id DESC;";
@@ -61,6 +72,11 @@ public class ArticlesRepository {
 		
 	}
 	
+	/**
+	 * 記事をDBへ保存する.
+	 * 
+	 * @param article
+	 */
 	public void insert(Articles article) {
 		String sql = "INSERT INTO articles(name, content) VALUES(:name,:content)";
 		

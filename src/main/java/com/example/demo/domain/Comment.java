@@ -1,10 +1,20 @@
 package com.example.demo.domain;
 
+/**
+ * コメントのドメイイン.
+ * 
+ * @author hiranoyuusuke
+ *
+ */
 public class Comment {
 
+	/**ID*/
 	private Integer id;
+	/**名前*/
 	private String name;
+	/**コメント内容*/
 	private String content;
+	/**ArticlesIdの外部キー*/
 	private Integer articleId;
 
 	public Comment() {}
