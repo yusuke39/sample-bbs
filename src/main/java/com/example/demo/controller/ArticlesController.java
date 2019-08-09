@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.Articles;
 import com.example.demo.domain.Comment;
@@ -68,11 +68,12 @@ public class ArticlesController {
 	@RequestMapping("/postArticle")
 	public String postArticle(@Validated ArticleForm form, 
 			BindingResult result,
-			RedirectAttributes redirectAttributes,
 			Model model) {
+		
 		if(result.hasErrors()) {
 			return index(model);
-		}
+		} 
+		
 		Articles articles = new Articles();
 		articles.setName(form.getName());
 		articles.setContent(form.getContent());
@@ -91,8 +92,8 @@ public class ArticlesController {
 	@RequestMapping("/postComment")
 	public String postComment(@Validated CommentForm form, 
 							BindingResult result,
-							RedirectAttributes redirreAttributes,
 							Model model) {
+		
 		if(result.hasErrors()) {
 			return index(model);
 		}
