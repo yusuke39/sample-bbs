@@ -20,7 +20,7 @@ public class CommentForm {
 	private String content;
 	/** ArticlesIdの外部キー */
 	private String articleId;
-	
+
 	public Integer getIntegerId() {
 		return Integer.parseInt(articleId);
 	}

@@ -70,6 +70,8 @@ public class ArticlesController {
 			BindingResult result,
 			Model model) {
 		
+		System.out.println(form);
+		
 		if(result.hasErrors()) {
 			return index(model);
 		} 

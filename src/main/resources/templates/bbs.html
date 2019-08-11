@@ -55,11 +55,11 @@
 				
 			
 			<!-- コメント投稿欄 -->
-			<form th:action="@{'/postComment?articleId='} + ${article.id}" th:object="${commentForm}" method="post">
+			<form th:action="@{/postComment}" th:object="${commentForm}" method="post">
 				<div th:if="${commentForm.articleId != null && article.id == commentForm.integerId}">
 					<div th:errors="*{name}" th:field="*{name}" style="color:red"></div>
 				</div>
-				<input type="hidden" th:name="${article.id}">
+				<input type="hidden" name="articleId" th:value="${article.id}">
 				名前:<input type="text" name="name"><br>
 				<div th:if="${commentForm.articleId != null && article.id == commentForm.integerId}">
 					<div th:errors="*{content}" th:field="*{content}" style="color:red"></div>
